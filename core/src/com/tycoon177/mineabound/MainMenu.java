@@ -33,7 +33,7 @@ public class MainMenu implements Screen {
 				((Game)Gdx.app.getApplicationListener()).setScreen(new GameWorld());
 			}
 		});
-		exit = new VisTextButton("Exit");
+		exit = new VisTextButton("Quit");
 		exit.addListener(new ClickListener() {
 			
 			@Override

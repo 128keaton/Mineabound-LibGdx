@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.tycoon177.mineabound.screens.GameWorld;
 import com.tycoon177.mineabound.world.Block;
 import com.tycoon177.mineabound.world.Chunk;
@@ -69,13 +68,8 @@ public abstract class Entity {
 		this.height = height;
 	}
 
-	public Vector2 getSize() {
+	protected Vector2 getSize() {
 		return new Vector2(width, height);
-	}
-	
-	public Array<Block> getCollisions(){
-		
-		return null;
 	}
 
 	public void update(float deltaTime) {
