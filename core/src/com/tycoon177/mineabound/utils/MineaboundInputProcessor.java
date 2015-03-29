@@ -80,6 +80,8 @@ public class MineaboundInputProcessor implements InputProcessor {
 					System.out.print("place");
 				}
 		}
+		
+		System.out.println(this.world.getPlayer().getDistanceFromPoint(lastTouchedPoint));
 		return true;
 	}
 

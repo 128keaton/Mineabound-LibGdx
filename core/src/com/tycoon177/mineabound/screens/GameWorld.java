@@ -1,5 +1,8 @@
 package com.tycoon177.mineabound.screens;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -18,6 +21,11 @@ import com.tycoon177.mineabound.world.ChunkHandler;
 public class GameWorld implements Screen {
 	private static OrthographicCamera camera;
 	private SpriteBatch renderer;
+	public float colorBlue;
+	public float colorRed;
+	public float colorGreen;
+	public float colorDuration;
+	public boolean shouldMoveToNight;
 	private ShapeRenderer debugRenderer;
 	public static Player player;
 	private ChunkHandler chunkHandler;
@@ -28,12 +36,13 @@ public class GameWorld implements Screen {
 	@Override
 	public void show() {
 		
-		song = Gdx.audio.newMusic(Gdx.files.internal("atazir.mp3"));
+		song = Gdx.audio.newMusic(Gdx.files.internal("C418 - Atempause.mp3"));
 		if(song != null){
 			song.setVolume(.1f);
 			song.setLooping(true);
 			song.play();
 		}
+		
 		
 		GameWorld.world = this;
 		renderer = new SpriteBatch();
@@ -41,18 +50,34 @@ public class GameWorld implements Screen {
 		camera.setToOrtho(false, 10, 10);
 		player = new Player();
 		player.setPosition(0, 100);
+		colorDuration = 0.128f;
+		shouldMoveToNight = false;
 		createInputProcessor();
 		chunkHandler = new ChunkHandler();
 		debugRenderer = new ShapeRenderer();
+		   Runnable r = new Runnable() {
+		         public void run() {
+		             try {
+						doInBackground();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		         }
+		     };
+
+		     ExecutorService executor = Executors.newCachedThreadPool();
+		     executor.submit(r);
+		     
 	}
 
 	private void createInputProcessor() {
 		Gdx.input.setInputProcessor((inputProcessor = new MineaboundInputProcessor(this)));
 	}
-
+	
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(.120f, .80f, 120f, 1);
+	      Gdx.gl.glClearColor(colorRed, colorGreen, colorBlue, 1);
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		camera.update();
 		removeAllBodies();
@@ -61,6 +86,8 @@ public class GameWorld implements Screen {
 		chunkHandler.render(renderer);
 		player.draw(renderer, player.getDirection());
 		renderer.end();
+		
+		
 		if(MineaboundLauncher.IS_DEBUG_RENDERING){
 			debugRenderer.setProjectionMatrix(camera.combined);
 			//Gdx.gl.glLineWidth(2f);
@@ -73,6 +100,70 @@ public class GameWorld implements Screen {
 		}
 		update(delta);
 	}
+
+	 protected Object doInBackground() throws Exception {
+	
+         while (true) {
+             java.awt.EventQueue.invokeLater(new Runnable() {
+            	
+                 public void run() {
+                    
+                
+                	 if(colorBlue > 0.255f && colorRed > 0.255f){
+                		 shouldMoveToNight = true;
+                	 }else if(colorBlue < 0.1 && colorRed < 0.1){
+                		 shouldMoveToNight = false;
+                		 colorBlue = 0.128f;
+                	 }
+                	 if(shouldMoveToNight == false){
+                		 colorDuration = colorDuration + 0.2f;
+                		 
+                		 if (colorRed != 0.50f){
+                		 colorRed = colorRed + .01f;
+                		 }
+                		 if(colorGreen != 0.237f){
+                			 colorGreen = colorGreen + 0.02f; 
+                		 }
+                		 if(colorBlue != 0.234f){
+                		 colorBlue = colorBlue + 0.4f;
+                		 shouldMoveToNight = true;
+                		 }
+                	
+                	 }else{
+                		 colorDuration = colorDuration - 0.2f; 
+                		 colorGreen = colorGreen - .1f;
+                		 colorRed = colorRed - .1f;
+                		 colorBlue = colorBlue - .1f;
+                		 
+                		 
+                	 }
+                	
+                	
+                   
+                     
+            
+               
+                    	
+                    
+                     System.out.println(colorDuration);
+                     try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                   
+                 }
+             });
+             try {
+                 Thread.sleep(1000);
+             } catch (InterruptedException e) {
+                 e.printStackTrace();
+             }
+         }
+     }
+
+ 
 
 	private void removeAllBodies() {
 		// chunkHandler.removeAllChunksFromWorld();

@@ -66,15 +66,20 @@ public class Chunk {
 
 		for (int x = 0; x < WIDTH; x++) {
 			for (int y = 0; y < HEIGHT && y < currentHeight; y++) {
-				block[x][y] = new Block(y < currentHeight ? BlockType.DIRT : BlockType.AIR, new Vector2(this.id * WIDTH + x, y));
+				block[x][y] = new Block(y < currentHeight ? BlockType.STONE : BlockType.AIR, new Vector2(this.id * WIDTH + x, y));
 				if(caveNoise[x][y] > .1f){
 					block[x][y].setBlockType(BlockType.AIR);
 				}else
 				if (y == currentHeight - 1)
 					block[x][y].setBlockType(BlockType.GRASS);
 				
-				// if (caveNoise[x][y] > 0)
-				// block[x][y].setBlockType(BlockType.AIR);
+				 if (caveNoise[x][y] > 0)
+				 block[x][y].setBlockType(BlockType.AIR);
+				 
+				 if(y > currentHeight - 6 && y < currentHeight - 1)
+				block[x][y].setBlockType(BlockType.DIRT);
+				 
+					
 			}
 
 			currentHeight += (noise[x]);
@@ -112,9 +117,9 @@ public class Chunk {
 			offset += WIDTH;
 		float[][] noise = new float[WIDTH][HEIGHT];
 		// Frequency = features. Higher = more features
-		float frequency = 0.125f;
+		float frequency = 0.200f;
 		// Weight = smoothness. Higher frequency = more smoothness
-		float weight = 1.5f;
+		float weight = 2.0f;
 
 		for (int passes = 0; passes < 6; passes++) {
 			for (int x = 0; x < WIDTH; x++) {

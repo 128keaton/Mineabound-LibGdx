@@ -90,7 +90,7 @@ public class ChunkHandler {
 
 	public void debugRender(ShapeRenderer debugRenderer) {
 		for (Block b : getVisibleBlocks()) {
-			b.debugDraw(debugRenderer);
+			//b.debugDraw(debugRenderer);
 		}
 	}
 
