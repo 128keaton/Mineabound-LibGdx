@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 import com.tycoon177.mineabound.entities.Player;
 import com.tycoon177.mineabound.screens.GameWorld;
 import com.tycoon177.mineabound.world.Block;
@@ -17,10 +18,14 @@ public class MineaboundInputProcessor implements InputProcessor {
 	private GameWorld world;
 	private final float forceX = .1f;
 	private Vector2 lastTouchedPoint;
-
+	public BlockType blockType;
+	public int finalScroll;
 	public MineaboundInputProcessor(GameWorld world) {
 		this.world = world;
+	//	blockType = new BlockType();
+		blockType = BlockType.SLIME;
 		lastTouchedPoint = new Vector2();
+		finalScroll = 0;
 	}
 
 	public boolean keyDown(int keycode) {
@@ -71,12 +76,20 @@ public class MineaboundInputProcessor implements InputProcessor {
 		this.lastTouchedPoint.set(new Vector2(onScreenLoc.x, onScreenLoc.y));
 		if (this.world.getPlayer().getDistanceFromPoint(onScreenLoc.x, onScreenLoc.y) < 5) {
 			if (button == Buttons.LEFT){
-				this.world.getChunkHandler().removeBlock(onScreenLoc);
-				System.out.print("remove");
+				
+				for(Block border : this.world.getChunkHandler().getVisibleBlocks()){
+						if(border.getBlockType() == BlockType.BEDROCK){
+							
+						}else{
+							this.world.getChunkHandler().removeBlock(touchLocation);
+						}
+				}
+				
+				
 		}
 			else
 				if (button == Buttons.RIGHT) {
-					this.world.getChunkHandler().addBlock(onScreenLoc, BlockType.STONE);
+					this.world.getChunkHandler().addBlock(onScreenLoc, blockType);
 					System.out.print("place");
 				}
 		}
@@ -108,25 +121,48 @@ public class MineaboundInputProcessor implements InputProcessor {
 		final Vector3 touchLocation = new Vector3(screenX + .5f, screenY + .5f, 0);
 		Vector3 onScreenLoc = world.getCamera().unproject(touchLocation); // In world point
 	//	this.lastTouchedPoint.set(new Vector2(onScreenLoc.x, onScreenLoc.y));
-		for(Block border : this.world.getChunkHandler().getVisibleBlocks() ){
-			if(border.getBlockType() == BlockType.BORDER){
-				border.setBlockType(BlockType.AIR);
-			}
-		}
 		
 		
-		if (this.world.getPlayer().getDistanceFromPoint(onScreenLoc.x, onScreenLoc.y) < 5) {
-			this.world.getChunkHandler().addBlock(onScreenLoc, BlockType.BORDER);
-		}else{
-			
-		}
-		return true;
+		
+		return false;
 	}
 
 	@Override
 	public boolean scrolled(int amount) {
 
-		return false;
+
+			if (finalScroll > -1 && finalScroll < 10) {
+				finalScroll = finalScroll + amount;
+				
+				
+		
+				System.out.println("UP");
+			}else{
+				finalScroll = 0;
+			}
+			
+	
+	
+		
+		  switch (finalScroll) {
+		  case 0: blockType = BlockType.SLIME;
+		  	break;
+		  case 1: blockType = BlockType.STONE;
+		  	break;
+		  case 2: blockType = BlockType.DIRT;
+		  	break;
+		  case 3: blockType = BlockType.GRASS;
+		  	break;
+		  case 4: blockType = BlockType.BEDROCK;
+		  	break;
+		  
+		  	
+		  
+		  }
+			System.out.println(finalScroll);
+		
+			
+		return true;
 	}
 
 	public Vector2 getLastTouchedPoint() {

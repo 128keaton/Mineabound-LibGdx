@@ -5,35 +5,49 @@ filter: Nearest,Nearest
 repeat: none
 playerStill
   rotate: false
-  xy: 1, 22
-  size: 15, 33
-  orig: 15, 33
+  xy: 0, 46
+  size: 12, 30
+  orig: 12, 30
+  offset: 0, 0
+  index: -1
+bedrock
+  rotate: false
+  xy: 12, 57
+  size: 18, 19
+  orig: 18, 19
   offset: 0, 0
   index: -1
 border
   rotate: false
-  xy: 18, 36
+  xy: 0, 27
   size: 18, 19
   orig: 18, 19
   offset: 0, 0
   index: -1
 dirt
   rotate: false
-  xy: 38, 36
+  xy: 0, 8
   size: 18, 19
   orig: 18, 19
   offset: 0, 0
   index: -1
 grass
   rotate: false
-  xy: 1, 1
+  xy: 18, 38
+  size: 18, 19
+  orig: 18, 19
+  offset: 0, 0
+  index: -1
+slime
+  rotate: false
+  xy: 18, 19
   size: 18, 19
   orig: 18, 19
   offset: 0, 0
   index: -1
 stone
   rotate: false
-  xy: 21, 15
+  xy: 18, 0
   size: 18, 19
   orig: 18, 19
   offset: 0, 0

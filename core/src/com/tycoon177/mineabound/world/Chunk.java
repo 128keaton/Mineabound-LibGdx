@@ -41,7 +41,7 @@ public class Chunk {
 
 		int currentHeight = 50;
 		float[] noise = generateNoise(id, noiseMap);
-
+		float[] caveNoise2 = generateNoise(id, noiseMap);
 		block = new Block[WIDTH][HEIGHT];
 		float[][] caveNoise = getCaveNoise(id, caveNoiseGen);
 		if (id > 0)

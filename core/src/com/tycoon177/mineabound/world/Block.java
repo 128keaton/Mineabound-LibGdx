@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.tycoon177.mineabound.entities.Player;
+import com.tycoon177.mineabound.screens.GameWorld;
 
 public class Block {
 	private BlockType type;
@@ -67,6 +69,7 @@ public class Block {
 	public boolean collides(Rectangle player) {
 		if (this.type == BlockType.AIR)
 			return false;
+		
 		Rectangle block = new Rectangle(getPosition().x, getPosition().y, this.width, this.height);
 		return block.overlaps(player);
 	}
